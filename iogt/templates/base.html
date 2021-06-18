@@ -40,18 +40,20 @@
 
                 {% block content %}{% endblock %}
 
-                {% footer %}
+                {% comment %} {% footer %} {% endcomment %}
             </div>
         </div>
 
          {# Global javascript #}    
 
-        <script>
-        function cache() {
-           if ('serviceWorker' in navigator) {
+        <script >
+     
+         if ('serviceWorker' in navigator) {
            navigator.serviceWorker.register('{% url "sw.js" %}', { scope: '/' })
-       }}  
+       }
        </script>
+
+       
         {% block extra_js %}{% endblock %}
     </body>
 </html>
