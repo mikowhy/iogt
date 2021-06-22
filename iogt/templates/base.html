@@ -44,14 +44,58 @@
             </div>
         </div>
 
-         {# Global javascript #}    
+         {# Global javascript #}   
 
-        <script>
+       {% comment %} <script >
+
         function cache() {
            if ('serviceWorker' in navigator) {
-           navigator.serviceWorker.register('{% url "sw.js" %}', { scope: '/' })
+          const wb = navigator.serviceWorker.register('{% url "sw.js" %}', { scope: '/' })
+          console.log(wb)
        }}  
-       </script>
+
+   </script> {% endcomment %}
+
+
+   <script type='module' >
+   import {Workbox} from '../static/third_party/workbox/workbox-v6.1.5/workbox-window.prod.mjs'
+
+   const wb = new Workbox('{% url "sw.js" %}');
+
+
+
+
+wb.addEventListener('activated', (event) => {
+  // `event.isUpdate` will be true if another version of the service
+  // worker was controlling the page when this version was registered.
+  if (!event.isUpdate) {
+    console.log('Service worker activated for the first time!');
+
+    // If your service worker is configured to precache assets, those
+    // assets should all be available now.
+  }
+});
+
+// Register the service worker after event listeners have been added.
+if ("serviceWorker" in navigator){
+wb.register();
+}
+
+
+
+
+const button = document.getElementById('download-btn')
+
+const cache = async ()=> {
+ await wb.messageSW({type: 'CACHE'});
+}
+
+button.addEventListener('click', cache)
+   </script>
+
+    
+
+    
         {% block extra_js %}{% endblock %}
     </body>
 </html>
