@@ -58,40 +58,24 @@
 
 
    <script type='module' >
-   import {Workbox} from '../static/third_party/workbox/workbox-v6.1.5/workbox-window.prod.mjs'
+   import { Workbox } from '../static/third_party/workbox/workbox-v6.1.5/workbox-window.prod.mjs'
 
    const wb = new Workbox('{% url "sw.js" %}');
 
-
-
-
-wb.addEventListener('activated', (event) => {
-  // `event.isUpdate` will be true if another version of the service
-  // worker was controlling the page when this version was registered.
-  if (!event.isUpdate) {
-    console.log('Service worker activated for the first time!');
-
-    // If your service worker is configured to precache assets, those
-    // assets should all be available now.
-  }
-});
-
-// Register the service worker after event listeners have been added.
 if ("serviceWorker" in navigator){
-wb.register();
+    window.addEventListener('load', () => {
+   wb.register();
+  });
 }
-
-
-
 
 const button = document.getElementById('download-btn')
 
-const cache = async ()=> {
- await wb.messageSW({type: 'CACHE'});
+const beginCaching = ()=> {
+ wb.messageSW({type: 'CACHE'});
 }
 
-button.addEventListener('click', cache)
-   </script>
+button.addEventListener('click', beginCaching)
+</script>
 
     
 
