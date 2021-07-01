@@ -1,7 +1,7 @@
 {% load wagtailcore_tags i18n %}
 
-<a href="{% pageurl value.page %}">
-  <button>
-    {{ value.text | default: value.page.title }}
-  </button>
+<a href="{% pageurl value.page %}" class='article-content__chat-btn'>
+   {% comment %} value.text  is breaking the page so using the value.page.title {% endcomment %}
+    {% comment %} {{ value.text|default: value.page.title }} {% endcomment %}
+    {{ value.page.title }}
 </a>
